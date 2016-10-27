@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta http-equiv="Cache-Control" content="no-cache"/> 
+<meta http-equiv="Expires" content="0"/> 
+<meta http-equiv="Pragma" content="no-cache"/>
+
+ <script src="js/jquery-3.1.1.min.js" type="text/javascript"></script>
+ <script src="js/jquery-ui.min.js" type="text/javascript"></script>
+ <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
+ <script src="http://developers.kakao.com/sdk/js/kakao.min.js"></script>
+ <link rel="stylesheet" href="js/jquery-ui.min.css">
+ <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
+ <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap-theme.min.css">
+<style type="text/css">
+#main {
+	position:relative;
+	height:550px;
+}
+#main div {
+	position:absolute;
+	top:0px;
+	left:0px;
+}
+#main div img {
+	width:550px;
+	max-width: 100%; 
+	height:100%;
+
+  -webkit-filter: grayscale(1); /* Webkit */
+  filter: gray; /* IE6-9 */
+  filter: grayscale(1); /* W3C */
+}
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-bottom: 2rem;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+body > .container {
+  padding: 60px 15px 0;
+}
+.container .text-muted {
+  margin: 20px 0;
+}
+
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+code {
+  font-size: 80%;
+}
+</style>
+ </HEAD>
+ <BODY>
+<div class="jumbotron">
+	<div class="container">
+		<p>사내 정보를 유출하는 스파이를 찾아라!!</p>
+	</div>
+</div>
+
+<p style="width:100%;text-align:center;">
+	<a class="btn btn-primary" href="#" role="button" style="width:40%;" id="btnPrev">&lt;&lt;</a>
+	<a class="btn btn-primary" href="#" role="button" style="width:40%;" id="btnNext">&gt;&gt;</a>
+</p>
+
+<div id="main">
+</div>
+  
+    <footer class="footer" style="height:70px">
+      <div class="container">
+<a id="kakao-link-btn" href="javascript:;" style="float:left;">
+<img src="http://dev.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"/>
+</a> 
+       <p class="text-muted">&nbsp;
+클린데스크! 크루들과 함께 해요!
+</p>
+      </div>
+    </footer>
+
+<script type='text/javascript'>
+    Kakao.init('8d69e216872707f3d5da75f1f2c0fdbf');
+    Kakao.Link.createTalkLinkButton({
+      container: '#kakao-link-btn',
+      label: '카카오 클린데스크 캠페인',
+      image: {
+        src: 'http://dn.api1.kage.kakao.co.kr/14/dn/btqaWmFftyx/tBbQPH764Maw2R6IBhXd6K/o.jpg',
+        width: '300',
+        height: '200'
+      },
+      webButton: {
+        text: '사내 정보를 유출하는 스파이를 찾아라!!',
+        url: 'http://gbro-test.s1.krane.9rum.cc/index.html'
+      }
+    });
+</script>
+
+<script type="text/javascript">
+var imgs = [
+	["img001.png"],
+	["img002.png"],
+	["img003.png"],
+	["img004.png"],
+	["img005.png"],
+	["img006.png"],
+	["img007.png"],
+	["img008.png"],
+	["fewdaysago2.png"],
+	["img009.png"],
+	["img010.png"],
+	["img011.png"],
+	["img012.png"],
+	["img013.png"],
+	["img014.png"],
+	["img015.png"],
+	["img016.png"],
+	["img017.png"],
+	["img018.png"],
+	["img019.png"],
+	["img020.png"],
+	["goodbye.gif"]
+];
+
+var player = new (function() {
+	var that = this;
+	var welMain, welBtnPrev, welBtnNext;
+	var page;
+
+	var timer;
+	var TIMEOUT = 5000;
+	var FADEOUT = 500;
+	var FADEIN = 1000
+	
+	this.init = function() {
+		welMain = $("#main");
+		welBtnPrev = $("#btnPrev");
+		welBtnNext = $("#btnNext");
+
+		welBtnPrev.click(function(we) {
+			we.preventDefault();
+			clearTimeout(timer);
+			page = Math.max(page - 2, 0);
+			next();
+		});
+
+		welBtnNext.click(function(we) {
+			we.preventDefault();
+			clearTimeout(timer);
+			next();
+		});
+
+		page = 0;
+		next();
+	}
+
+	var lastDiv = null;
+	function next() {
+		if (page >= imgs.length) {
+			return;
+		}
+		var imgList = imgs[page];
+		var _html = "";
+		if (imgList.length == 1) {
+			_html = "<div><img src='images/" + imgList[0] + "'></div>";
+		} else {
+		}
+
+		if (lastDiv != null) {
+			lastDiv.fadeOut(FADEOUT);
+		}
+		var newDiv = $(_html).hide();
+		welMain.append(newDiv);
+		newDiv.fadeIn(FADEIN);
+		page++;
+		lastDiv = newDiv;
+		timer = setTimeout(next, TIMEOUT);
+	}
+
+})();
+
+
+$(document).ready(function() {
+	player.init();
+});
+</script>
+
+
+ </BODY>
+
+</HTML>
