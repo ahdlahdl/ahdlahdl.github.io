@@ -17,23 +17,14 @@
   filter: grayscale(1); /* W3C */
 }
 
-/* Move down content because we have a fixed navbar that is 50px tall */
-body {
-  padding-bottom: 2rem;
-}
-
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
   position: relative;
   min-height: 100%;
 }
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
+
 .footer {
-  position: absolute;
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
