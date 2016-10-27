@@ -15,71 +15,10 @@
  <link rel="stylesheet" href="js/jquery-ui.min.css">
  <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
  <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap-theme.min.css">
-<style type="text/css">
-#main {
-	position:relative;
-	height:550px;
-}
-#main div {
-	position:absolute;
-	top:0px;
-	left:0px;
-}
-#main div img {
-	width:550px;
-	max-width: 100%; 
-	height:100%;
+ <link rel="stylesheet" href="group3.css">
 
-  -webkit-filter: grayscale(1); /* Webkit */
-  filter: gray; /* IE6-9 */
-  filter: grayscale(1); /* W3C */
-}
+ <script src="group3.js" type="text/javascript"></script>
 
-/* Move down content because we have a fixed navbar that is 50px tall */
-body {
-  padding-bottom: 2rem;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
-}
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  background-color: #f5f5f5;
-}
-
-
-/* Custom page CSS
--------------------------------------------------- */
-/* Not required for template or sticky footer method. */
-
-body > .container {
-  padding: 60px 15px 0;
-}
-.container .text-muted {
-  margin: 20px 0;
-}
-
-.footer > .container {
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-code {
-  font-size: 80%;
-}
-</style>
  </HEAD>
  <BODY>
 <div class="jumbotron">
@@ -107,107 +46,7 @@ code {
       </div>
     </footer>
 
-<script type='text/javascript'>
-    Kakao.init('8d69e216872707f3d5da75f1f2c0fdbf');
-    Kakao.Link.createTalkLinkButton({
-      container: '#kakao-link-btn',
-      label: '카카오 클린데스크 캠페인',
-      image: {
-        src: 'http://dn.api1.kage.kakao.co.kr/14/dn/btqaWmFftyx/tBbQPH764Maw2R6IBhXd6K/o.jpg',
-        width: '300',
-        height: '200'
-      },
-      webButton: {
-        text: '사내 정보를 유출하는 스파이를 찾아라!!',
-        url: 'http://ahdlahdl.github.io/group3/'
-      }
-    });
-</script>
-
 <script type="text/javascript">
-var imgs = [
-	["img001.png"],
-	["img002.png"],
-	["img003.png"],
-	["img004.png"],
-	["img005.png"],
-	["img006.png"],
-	["img007.png"],
-	["img008.png"],
-	["fewdaysago2.png"],
-	["img009.png"],
-	["img010.png"],
-	["img011.png"],
-	["img012.png"],
-	["img013.png"],
-	["img014.png"],
-	["img015.png"],
-	["img016.png"],
-	["img017.png"],
-	["img018.png"],
-	["img019.png"],
-	["img020.png"],
-	["goodbye.gif"]
-];
-
-var player = new (function() {
-	var that = this;
-	var welMain, welBtnPrev, welBtnNext;
-	var page;
-
-	var timer;
-	var TIMEOUT = 5000;
-	var FADEOUT = 500;
-	var FADEIN = 1000
-	
-	this.init = function() {
-		welMain = $("#main");
-		welBtnPrev = $("#btnPrev");
-		welBtnNext = $("#btnNext");
-
-		welBtnPrev.click(function(we) {
-			we.preventDefault();
-			clearTimeout(timer);
-			page = Math.max(page - 2, 0);
-			next();
-		});
-
-		welBtnNext.click(function(we) {
-			we.preventDefault();
-			clearTimeout(timer);
-			next();
-		});
-
-		page = 0;
-		next();
-	}
-
-	var lastDiv = null;
-	function next() {
-		if (page >= imgs.length) {
-			return;
-		}
-		var imgList = imgs[page];
-		var _html = "";
-		if (imgList.length == 1) {
-			_html = "<div><img src='images/" + imgList[0] + "'></div>";
-		} else {
-		}
-
-		if (lastDiv != null) {
-			lastDiv.fadeOut(FADEOUT);
-		}
-		var newDiv = $(_html).hide();
-		welMain.append(newDiv);
-		newDiv.fadeIn(FADEIN);
-		page++;
-		lastDiv = newDiv;
-		timer = setTimeout(next, TIMEOUT);
-	}
-
-})();
-
-
 $(document).ready(function() {
 	player.init();
 });
