@@ -82,17 +82,19 @@ var player = new (function() {
 })();
 
 
-Kakao.init('8d69e216872707f3d5da75f1f2c0fdbf');
-Kakao.Link.createTalkLinkButton({
-  container: '#kakao-link-btn',
-  label: '카카오 클린데스크 캠페인',
-  image: {
-    src: 'http://dn.api1.kage.kakao.co.kr/14/dn/btqaWmFftyx/tBbQPH764Maw2R6IBhXd6K/o.jpg',
-    width: '300',
-    height: '200'
-  },
-  webButton: {
-    text: '사내 정보를 유출하는 스파이를 찾아라!!',
-    url: 'http://ahdlahdl.github.io/group3/'
-  }
-});
+function initKakaoLink() {
+  Kakao.init('8d69e216872707f3d5da75f1f2c0fdbf');
+  Kakao.Link.createTalkLinkButton({
+    container: '#kakao-link-btn',
+    label: '카카오 클린데스크 캠페인',
+    image: {
+      src: 'http://dn.api1.kage.kakao.co.kr/14/dn/btqaWmFftyx/tBbQPH764Maw2R6IBhXd6K/o.jpg',
+      width: '300',
+      height: '200'
+    },
+    webButton: {
+      text: '사내 정보를 유출하는 스파이를 찾아라!!',
+      url: 'http://ahdlahdl.github.io/group3/'
+    }
+  });
+}
