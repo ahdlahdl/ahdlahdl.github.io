@@ -57,10 +57,11 @@ var player = new (function() {
 	}
 
 	function getNextPageNo() {
-		if (page >= imgs.length) {
+    var nextPageNo = page + 1;
+		if (nextPageNo >= imgs.length) {
 			return -1;
 		}
-		return page + 1;
+		return nextPageNo;
 	}
 	
 	function findOrMakeDivPage(page) {
