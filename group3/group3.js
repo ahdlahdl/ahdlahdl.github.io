@@ -101,7 +101,7 @@ function initKakaoLink() {
 	Kakao.init('8d69e216872707f3d5da75f1f2c0fdbf');
 	Kakao.Link.createTalkLinkButton({
 		container : '#kakao-link-btn',
-		label : '카카오 클린데스크 캠페인',
+		label : '클린데스크 캠페인',
 		image : {
 			src : 'http://dn.api1.kage.kakao.co.kr/14/dn/btqaWmFftyx/tBbQPH764Maw2R6IBhXd6K/o.jpg',
 			width : '300',
@@ -113,3 +113,12 @@ function initKakaoLink() {
 		}
 	});
 }
+
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-86541424-2', 'auto');
+ga('send', 'pageview');
