@@ -18,45 +18,43 @@
 
 <style type="text/css">
 .viewer {width:100%;}
-.channel {float:left;min-width:300px;width:30%;}
+
+.top_menu {margin-bottom:5px;}
+.category_menu {/*float:left;*/}
+.total_search .url {margin-left:10px;width:200px;float:left;}
+
+.channel {float:left;/*min-width:300px;width:30%;*/width:350px;margin-right:1px;}
+.channel .url {width:310px;float:left;}
 .channel iframe {border-width:1px;width:100%;height:100%;min-height:450px;}
 </style>
 </head>
 <body>
 <div class="container-fluid">
-	<div class="menubar">
-	<!-- 
-		<a class="btn btn-info menu" data-cate="portal" href="#">포털</a>
-		<a class="btn btn-info menu" data-cate="socialcommers" href="#">소셜커머스</a>
-		<a class="btn btn-info menu" data-cate="shopping" href="#">쇼핑</a>
-	 -->
+	<div class="top_menu">
+		<div class="category_menu"></div>
+
+<!-- 
+		<div class="total_search">
+			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">검색</a>
+		</div>
+-->
+		<div class="last">
+		</div>
 	</div>
 	
     <div class="viewer">
     	<div class="channel" id="frm1">
-<!--
-    		<a class="btn btn-info prev" href="#">❮ Previous</a>
-    		<a class="btn btn-info next" href="#">Next ❯</a>
-    		<br>
--->
-	        <iframe src="blank.html"></iframe>
+			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">↙</a>
+	        <iframe src="blank.html" target="_blank"></iframe>
     	</div>
 
     	<div class="channel" id="frm2">
-<!--
-    		<a class="btn btn-info prev" href="#">❮ Previous</a>
-    		<a class="btn btn-info next" href="#">Next ❯</a>
-    		<br>
--->
+			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">↙</a>
 	        <iframe src="blank.html"></iframe>
     	</div>
 
     	<div class="channel" id="frm3">
-<!--
-    		<a class="btn btn-info prev" href="#">❮ Previous</a>
-    		<a class="btn btn-info next" href="#">Next ❯</a>
-    		<br>
--->
+			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">↙</a>
 	        <iframe src="blank.html"></iframe>
     	</div>
     </div>
@@ -64,61 +62,129 @@
 <script type="text/javascript">
 var aSiteMapList = [
 	{name:"포털",list:["http://m.naver.com", "http://m.daum.net", "http://m.nate.com"]},
+	{name:"웹툰",list:["http://m.comic.naver.com/", "http://m.webtoon.daum.net", "http://m.comics.nate.com"]},
 	//{name:"쇼핑",list:["http://m.gmarket.com", "http://mobile.auction.co.kr/", "blank.html"]},
 	{name:"소셜커머스",list:["http://m.coupang.com/nm/", "http://m.ticketmonster.co.kr", "http://m.wemakeprice.com"]}
 ];
 
-function drawMenu() {
-	var welMenubar = $(".menubar");
-	welMenubar.html("");
-	for (var i = 0; i < aSiteMapList.length; i++) {
-		var htData = aSiteMapList[i];
-		var welButton = $("<a class='btn btn-info menu' href='#'>" + htData.name + "</a>");
-		var makeFunction = function(htSiteMap) {
-			return function(we) {
-				we.preventDefault();
-				changeCategory(htSiteMap.list);
-			}
-		}
-		welButton.bind("click", makeFunction(htData));
-		welMenubar.append(welButton);
-	}
-}
-
-function changeCategory(aSite) {
-	var awelFrame = $(".channel");
+var UrlBox = function(htOption) {
+	var that = this;
+	var welContainer, welUrlBox, welBtnSearch;
 	
-	awelFrame.each(function(n) {
-		var welFrame = $(this);
-		var welIframe = welFrame.find("iframe");
-		welIframe.attr("src", aSite[n]);
-
-		/*
-		var welBtnPrev = welFrame.find(".btn.prev");
-		var welBtnNext = welFrame.find(".btn.next");
-		welBtnPrev.bind("click", function(we) {
+	var init = function() {
+		welContainer = $(htOption.container);
+		welUrlBox = welContainer.find("input.url");
+		welBtnSearch = welContainer.find(".btn.search");
+		
+		welBtnSearch.bind("click", function(we) {
 			we.preventDefault();
-			a= welIframe[0];
+			htOption.search(welUrlBox.val());
 		});
-		welBtnNext.bind("click", function(we) {
-			we.preventDefault();
-			a= welIframe[0];
+		
+		welUrlBox.keypress(function(e) {
+			if (e.keyCode == 13) {
+				htOption.search(welUrlBox.val());
+			}
 		});
-		*/
-	});
+	}
+	
+	init();
 }
+
+var Channel = function(elChannelContainer) {
+	var that = this;
+	var welContainer, welUrlBox, welBtnSearch, welIframe;
+	
+	var init = function() {
+		welContainer = $(elChannelContainer);
+		welUrlBox = welContainer.find("input.url");
+		welBtnSearch = welContainer.find(".btn.search");
+		welIframe = welContainer.find("iframe");
+		
+		welBtnSearch.bind("click", function(we) {
+			we.preventDefault();
+			search();
+		});
+		
+		welUrlBox.keypress(function(e) {
+			if (e.keyCode == 13) {
+				search();
+			}
+		});
+	}
+	
+	var search = function() {
+		var sUrl = welUrlBox.val();
+		welIframe.attr("src", sUrl);
+	}
+	
+	this.search = function(url) {
+		welUrlBox.val(url);
+		search();
+	}
+	
+	init();
+}
+
+var viewer = new (function() {
+	var that = this;
+	var aChannel = [];
+	
+	this.init = function(welChannelList) {
+		for (var i = 0; i < welChannelList.length; i++) {
+			aChannel.push(new Channel(welChannelList.eq(i)));
+		}
+		
+		drawMenu();
+	}
+	
+	this.changeCategory = function(aSite) {
+		for (var i = 0; i < aSite.length; i++) {
+			aChannel[i].search(aSite[i]);
+		}
+	}
+	
+	var drawMenu = function() {
+		var welCategoryMenu = $(".category_menu");
+		welCategoryMenu.html("");
+		for (var i = 0; i < aSiteMapList.length; i++) {
+			var htData = aSiteMapList[i];
+			var welButton = $("<a class='btn btn-info menu' href='#'>" + htData.name + "</a>");
+			var makeFunction = function(htSiteMap) {
+				return function(we) {
+					we.preventDefault();
+					that.changeCategory(htSiteMap.list);
+				}
+			}
+			welButton.bind("click", makeFunction(htData));
+			welCategoryMenu.append(welButton);
+		}
+	}
+})();
+
 
 $(document).ready(function() {
-	drawMenu();
-	changeCategory(aSiteMapList[0].list);
+	viewer.init($(".channel"));
+	viewer.changeCategory(aSiteMapList[0].list);
 	resizeIframes();
+	
+	var totalSearchBox = new UrlBox({
+		container : $(".total_search"),
+		search : function(keyword) {
+			viewer.changeCategory([
+			                       "http://m.search.naver.com/search.naver?query=" + keyword,
+			                       "https://m.search.daum.net/search?q=" + keyword,
+			                       "https://m.search.daum.net/nate?w=tot&thr=mnms&q=" + keyword
+		    ]);
+		}
+	});
 });
 
 function resizeIframes() {
 	var win = $(this);
     var awelIframe = $(".channel iframe");
     awelIframe.each(function() {
-    	$(this).height(win.height() - 50);
+    	$(this).height(win.height() - 100);
     });
 }
 
@@ -128,6 +194,16 @@ if (console) {
 	console.log = function() {};
 	console.error = function() {};
 }
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-87941781-1', 'auto');
+  ga('send', 'pageview');
+
 </script>
 </body>
 </html>
