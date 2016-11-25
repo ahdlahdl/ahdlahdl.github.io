@@ -21,10 +21,11 @@
 
 .top_menu {margin-bottom:5px;}
 .category_menu {float:left;}
+.total_search {margin-left:10px;margin-right:10px;float:left;}
 .total_search .url {margin-left:10px;width:200px;float:left;}
 
 .channel {float:left;/*min-width:300px;width:30%;*/width:350px;margin-right:1px;}
-.channel .url {width:310px;float:left;}
+.channel .url {width:250px;float:left;}
 .channel iframe {border-width:1px;width:100%;height:100%;min-height:450px;}
 </style>
 </head>
@@ -36,31 +37,40 @@
 		<div class="total_search">
 			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">검색</a>
 		</div>
+		
+		<div class="tools">
+			<a class="btn btn-primary geturl" href="#">URL 생성</a>
+		</div>
 	</div>
 	
     <div class="viewer">
     	<div class="channel" id="frm1" style="display:none;">
 			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">↙</a>
+			<a class="btn btn-warning btn-sm narrow" href="#">-</a><a class="btn btn-warning btn-sm wide" href="#">+</a>
 	        <iframe src="blank.html" target="_blank"></iframe>
     	</div>
 
     	<div class="channel" id="frm2" style="display:none;">
 			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">↙</a>
+			<a class="btn btn-warning btn-sm narrow" href="#">-</a><a class="btn btn-warning btn-sm wide" href="#">+</a>
 	        <iframe src="blank.html"></iframe>
     	</div>
 
     	<div class="channel" id="frm3" style="display:none;">
 			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">↙</a>
+			<a class="btn btn-warning btn-sm narrow" href="#">-</a><a class="btn btn-warning btn-sm wide" href="#">+</a>
 	        <iframe src="blank.html"></iframe>
     	</div>
     	
     	<div class="channel" id="frm4" style="display:none;">
 			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">↙</a>
+			<a class="btn btn-warning btn-sm narrow" href="#">-</a><a class="btn btn-warning btn-sm wide" href="#">+</a>
 	        <iframe src="blank.html"></iframe>
     	</div>
     	
     	<div class="channel" id="frm5" style="display:none;">
 			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">↙</a>
+			<a class="btn btn-warning btn-sm narrow" href="#">-</a><a class="btn btn-warning btn-sm wide" href="#">+</a>
 	        <iframe src="blank.html"></iframe>
     	</div>
     </div>
@@ -118,6 +128,9 @@ var UrlBox = function(htOption) {
 var Channel = function(elChannelContainer) {
 	var that = this;
 	var welContainer, urlBox, welIframe;
+	var welBtnNarrow, welBtnWide;
+	
+	var MIN_WIDTH = 350;
 	
 	var init = function() {
 		welContainer = $(elChannelContainer);
@@ -128,14 +141,34 @@ var Channel = function(elChannelContainer) {
 			}
 		});
 		welIframe = welContainer.find("iframe");
+		welBtnNarrow = welContainer.find(".narrow");
+		welBtnWide = welContainer.find(".wide");
+		
+		welBtnNarrow.bind("click", function(we) {
+			we.preventDefault();
+			var width = Math.max(welContainer.width() - 50, MIN_WIDTH);
+			welContainer.width(width);
+		});
+		
+		welBtnWide.bind("click", function(we) {
+			we.preventDefault();
+			var width = welContainer.width() + 50;
+			welContainer.width(width);
+		})
 	}
 	
 	this.search = function(sUrl) {
 		urlBox.change(sUrl);
 	}
 	
-	this.show = function() {
+	this.show = function(htChannelInfo) {
 		welContainer.show();
+		if (htChannelInfo.url) {
+			that.search(htChannelInfo.url);
+		}
+		if (htChannelInfo.width) {
+			welContainer.width(htChannelInfo.width);
+		}
 	}
 	
 	this.hide = function() {
@@ -149,7 +182,8 @@ var Channel = function(elChannelContainer) {
 	
 	this.getInfo = function() {
 		return {
-				url : urlBox.getInfo()
+				url : urlBox.getInfo(),
+				width : welContainer.width()
 		};
 		return htResult;
 	}
@@ -176,8 +210,7 @@ var viewer = new (function() {
 			aChannel[i].close();
 		}
 		for (var i = 0; i < aSite.length; i++) {
-			aChannel[i].show();
-			aChannel[i].search(aSite[i].url);
+			aChannel[i].show(aSite[i]);
 		}
 	}
 	
@@ -244,6 +277,11 @@ $(document).ready(function() {
 			                       new Url("네이트", "https://m.search.daum.net/nate?w=tot&thr=mnms&q=" + keyword)
 		    ]);
 		}
+	});
+	
+	$(".geturl").click(function(we) {
+		we.preventDefault();
+		location.hash = JSON.stringify(viewer.getInfo());
 	});
 });
 
