@@ -36,33 +36,46 @@
 		<div class="total_search">
 			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">검색</a>
 		</div>
-		<div class="last">
-		</div>
 	</div>
 	
     <div class="viewer">
-    	<div class="channel" id="frm1">
+    	<div class="channel" id="frm1" style="display:none;">
 			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">↙</a>
 	        <iframe src="blank.html" target="_blank"></iframe>
     	</div>
 
-    	<div class="channel" id="frm2">
+    	<div class="channel" id="frm2" style="display:none;">
 			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">↙</a>
 	        <iframe src="blank.html"></iframe>
     	</div>
 
-    	<div class="channel" id="frm3">
+    	<div class="channel" id="frm3" style="display:none;">
+			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">↙</a>
+	        <iframe src="blank.html"></iframe>
+    	</div>
+    	
+    	<div class="channel" id="frm4" style="display:none;">
+			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">↙</a>
+	        <iframe src="blank.html"></iframe>
+    	</div>
+    	
+    	<div class="channel" id="frm5" style="display:none;">
 			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">↙</a>
 	        <iframe src="blank.html"></iframe>
     	</div>
     </div>
 </div>
 <script type="text/javascript">
+var Url = function(name, url) {
+	this.name = name;
+	this.url = url;
+}
+
 var aSiteMapList = [
-	{name:"포털",list:["http://m.naver.com", "http://m.daum.net", "http://m.nate.com"]},
-	{name:"웹툰",list:["http://m.comic.naver.com/", "http://m.webtoon.daum.net", "http://m.comics.nate.com"]},
+	{name:"포털",list:[new Url("네이버", "http://m.naver.com"), new Url("다음", "http://m.daum.net"), new Url("네이트", "http://m.nate.com")]},
+	{name:"웹툰",list:[new Url("네이버 웹툰", "http://m.comic.naver.com/"), new Url("다음 웹툰", "http://m.webtoon.daum.net"), new Url("네이트 웹툰", "http://m.comics.nate.com")]},
 	//{name:"쇼핑",list:["http://m.gmarket.com", "http://mobile.auction.co.kr/", "blank.html"]},
-	{name:"소셜커머스",list:["http://m.coupang.com/nm/", "http://m.ticketmonster.co.kr", "http://m.wemakeprice.com"]}
+	{name:"소셜커머스",list:[new Url("쿠팡", "http://m.coupang.com/nm/"), new Url("티몬", "http://m.ticketmonster.co.kr"), new Url("위메프", "http://m.wemakeprice.com")]}
 ];
 
 var UrlBox = function(htOption) {
@@ -76,31 +89,6 @@ var UrlBox = function(htOption) {
 		
 		welBtnSearch.bind("click", function(we) {
 			we.preventDefault();
-			htOption.search(welUrlBox.val());
-		});
-		
-		welUrlBox.keypress(function(e) {
-			if (e.keyCode == 13) {
-				htOption.search(welUrlBox.val());
-			}
-		});
-	}
-	
-	init();
-}
-
-var Channel = function(elChannelContainer) {
-	var that = this;
-	var welContainer, welUrlBox, welBtnSearch, welIframe;
-	
-	var init = function() {
-		welContainer = $(elChannelContainer);
-		welUrlBox = welContainer.find("input.url");
-		welBtnSearch = welContainer.find(".btn.search");
-		welIframe = welContainer.find("iframe");
-		
-		welBtnSearch.bind("click", function(we) {
-			we.preventDefault();
 			search();
 		});
 		
@@ -111,14 +99,59 @@ var Channel = function(elChannelContainer) {
 		});
 	}
 	
-	var search = function() {
-		var sUrl = welUrlBox.val();
-		welIframe.attr("src", sUrl);
+	this.change = function(sUrl) {
+		welUrlBox.val(sUrl);
+		search();
 	}
 	
-	this.search = function(url) {
-		welUrlBox.val(url);
-		search();
+	var search = function() {
+		htOption.search(welUrlBox.val());
+	}
+	
+	this.getInfo = function() {
+		return welUrlBox.val();
+	}
+	
+	init();
+}
+
+var Channel = function(elChannelContainer) {
+	var that = this;
+	var welContainer, urlBox, welIframe;
+	
+	var init = function() {
+		welContainer = $(elChannelContainer);
+		urlBox = new UrlBox({
+			container : welContainer,
+			search : function(sUrl) {
+				welIframe.attr("src", sUrl);
+			}
+		});
+		welIframe = welContainer.find("iframe");
+	}
+	
+	this.search = function(sUrl) {
+		urlBox.change(sUrl);
+	}
+	
+	this.show = function() {
+		welContainer.show();
+	}
+	
+	this.hide = function() {
+		welContainer.hide();
+	}
+	
+	this.close = function() {
+		welContainer.hide();
+		welIframe.attr("src", "blank.html");
+	}
+	
+	this.getInfo = function() {
+		return {
+				url : urlBox.getInfo()
+		};
+		return htResult;
 	}
 	
 	init();
@@ -127,8 +160,10 @@ var Channel = function(elChannelContainer) {
 var viewer = new (function() {
 	var that = this;
 	var aChannel = [];
+	var welChannelList;
 	
-	this.init = function(welChannelList) {
+	this.init = function(_welChannelList) {
+		welChannelList = _welChannelList;
 		for (var i = 0; i < welChannelList.length; i++) {
 			aChannel.push(new Channel(welChannelList.eq(i)));
 		}
@@ -137,8 +172,12 @@ var viewer = new (function() {
 	}
 	
 	this.changeCategory = function(aSite) {
+		for (var i = 0; i < aChannel.length; i++) {
+			aChannel[i].close();
+		}
 		for (var i = 0; i < aSite.length; i++) {
-			aChannel[i].search(aSite[i]);
+			aChannel[i].show();
+			aChannel[i].search(aSite[i].url);
 		}
 	}
 	
@@ -158,21 +197,51 @@ var viewer = new (function() {
 			welCategoryMenu.append(welButton);
 		}
 	}
+	
+	this.getInfo = function() {
+		var htResult = {
+				list : []
+		};
+		for (var i = 0; i < aChannel.length; i++) {
+			var htInfo = aChannel[i].getInfo();
+			if (!htInfo.url || htInfo.url == "blank.html") {
+				continue;
+			}
+			htResult.list.push(htInfo);
+		}
+		return htResult;
+	}
+	
+	this.setInfo = function(htInfo) {
+		that.changeCategory(htInfo.list);
+	}
 })();
 
 
 $(document).ready(function() {
 	viewer.init($(".channel"));
-	viewer.changeCategory(aSiteMapList[0].list);
+	
+	var hash = location.hash.replace(/^#/, "");
+	var htInfo = {};
+	if (hash && $.trim(hash).length > 0) {
+		htInfo = JSON.parse(hash);
+	}
+	
+	if (htInfo.list && htInfo.list.length > 0) {
+		viewer.changeCategory(htInfo.list);
+	} else {
+		viewer.changeCategory(aSiteMapList[0].list);
+	}
+
 	resizeIframes();
 	
 	var totalSearchBox = new UrlBox({
 		container : $(".total_search"),
 		search : function(keyword) {
 			viewer.changeCategory([
-			                       "http://m.search.naver.com/search.naver?query=" + keyword,
-			                       "https://m.search.daum.net/search?q=" + keyword,
-			                       "https://m.search.daum.net/nate?w=tot&thr=mnms&q=" + keyword
+			                       new Url("네이버", "http://m.search.naver.com/search.naver?query=" + keyword),
+			                       new Url("다음", "https://m.search.daum.net/search?q=" + keyword),
+			                       new Url("네이트", "https://m.search.daum.net/nate?w=tot&thr=mnms&q=" + keyword)
 		    ]);
 		}
 	});
@@ -192,6 +261,9 @@ if (console) {
 	console.log = function() {};
 	console.error = function() {};
 }
+
+
+
 </script>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
