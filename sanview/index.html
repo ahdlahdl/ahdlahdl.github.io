@@ -40,6 +40,7 @@
 		
 		<div class="tools">
 			<a class="btn btn-primary geturl" href="#">URL 생성</a>
+			<a class="btn btn-primary addChannel" href="#">창 추가</a>
 		</div>
 	</div>
 	
@@ -88,6 +89,10 @@ var aSiteMapList = [
 	{name:"소셜커머스",list:[new Url("쿠팡", "http://m.coupang.com/nm/"), new Url("티몬", "http://m.ticketmonster.co.kr"), new Url("위메프", "http://m.wemakeprice.com")]}
 ];
 
+/**
+ * htOption.container
+ * htOption.search
+ */
 var UrlBox = function(htOption) {
 	var that = this;
 	var welContainer, welUrlBox, welBtnSearch;
@@ -122,6 +127,10 @@ var UrlBox = function(htOption) {
 		return welUrlBox.val();
 	}
 	
+	this.focus = function() {
+		welUrlBox.focus();
+	}
+	
 	init();
 }
 
@@ -147,6 +156,10 @@ var Channel = function(_htOption) {
 		urlBox = new UrlBox({
 			container : welContainer,
 			search : function(sUrl) {
+				if (/^http[s]?:\/\//.test(sUrl) != true) {
+					urlBox.change("http://" + sUrl);
+					return;
+				}
 				welIframe.attr("src", sUrl);
 			}
 		});
@@ -175,16 +188,18 @@ var Channel = function(_htOption) {
 	
 	this.show = function(htChannelInfo) {
 		welContainer.show();
-		if (htChannelInfo.url) {
+		if (htChannelInfo && htChannelInfo.url) {
 			that.search(htChannelInfo.url);
 		}
-		if (htChannelInfo.width) {
+		if (htChannelInfo && htChannelInfo.width) {
 			welContainer.width(htChannelInfo.width);
 		}
+		htOption.onResize();
 	}
 	
 	this.hide = function() {
 		welContainer.hide();
+		htOption.onResize();
 	}
 	
 	this.close = function() {
@@ -192,10 +207,18 @@ var Channel = function(_htOption) {
 		welIframe.attr("src", "blank.html");
 	}
 	
+	this.isActive = function() {
+		return welContainer.is(":visible");
+	}
+	
+	this.focus = function() {
+		urlBox.focus();
+	}
+	
 	this.getInfo = function() {
 		return {
 				url : urlBox.getInfo(),
-				width : welContainer.is(":visible") ? welContainer.width() : 0
+				width : that.isActive() ? welContainer.width() : 0
 		};
 		return htResult;
 	}
@@ -225,6 +248,9 @@ var viewer = new (function() {
 			aChannel[i].close();
 		}
 		for (var i = 0; i < aSite.length; i++) {
+			if (!aSite[i].url) {
+				continue;
+			}
 			aChannel[i].show(aSite[i]);
 		}
 		resizeWidth();
@@ -261,7 +287,7 @@ var viewer = new (function() {
 		};
 		for (var i = 0; i < aChannel.length; i++) {
 			var htInfo = aChannel[i].getInfo();
-			if (!htInfo.url || htInfo.url == "blank.html") {
+			if (!aChannel[i].isActive()) {
 				continue;
 			}
 			htResult.list.push(htInfo);
@@ -271,6 +297,18 @@ var viewer = new (function() {
 	
 	this.setInfo = function(htInfo) {
 		that.changeCategory(htInfo.list);
+	}
+	
+	this.addChannel = function() {
+		for (var i = 0; i < aChannel.length; i++) {
+			if (aChannel[i].isActive()) {
+				continue;
+			}
+			aChannel[i].show();
+			aChannel[i].focus();
+			return;
+		}
+		alert("검색창은 최대 " + aChannel.length + "개까지만 열 수 있습니다.");
 	}
 })();
 
@@ -301,6 +339,11 @@ $(document).ready(function() {
 			                       new Url("네이트", "https://m.search.daum.net/nate?w=tot&thr=mnms&q=" + keyword)
 		    ]);
 		}
+	});
+	
+	$(".addChannel").click(function(we) {
+		we.preventDefault();
+		viewer.addChannel();
 	});
 	
 	$(".geturl").click(function(we) {
