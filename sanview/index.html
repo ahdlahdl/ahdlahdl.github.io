@@ -17,7 +17,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <style type="text/css">
-.viewer {width:100%;}
+.viewer {}
 
 .top_menu {margin-bottom:5px;}
 .category_menu {float:left;}
@@ -125,15 +125,25 @@ var UrlBox = function(htOption) {
 	init();
 }
 
-var Channel = function(elChannelContainer) {
+/**
+ * htOption.container
+ * htOption.onResize
+ */
+var Channel = function(_htOption) {
 	var that = this;
 	var welContainer, urlBox, welIframe;
 	var welBtnNarrow, welBtnWide;
-	
+
+	var htOption = {
+			container : null,
+			onResize : function() {}
+	};
+
 	var MIN_WIDTH = 350;
 	
 	var init = function() {
-		welContainer = $(elChannelContainer);
+		htOption = _htOption;
+		welContainer = $(htOption.container);
 		urlBox = new UrlBox({
 			container : welContainer,
 			search : function(sUrl) {
@@ -148,12 +158,14 @@ var Channel = function(elChannelContainer) {
 			we.preventDefault();
 			var width = Math.max(welContainer.width() - 50, MIN_WIDTH);
 			welContainer.width(width);
+			htOption.onResize();
 		});
 		
 		welBtnWide.bind("click", function(we) {
 			we.preventDefault();
 			var width = welContainer.width() + 50;
 			welContainer.width(width);
+			htOption.onResize();
 		})
 	}
 	
@@ -183,7 +195,7 @@ var Channel = function(elChannelContainer) {
 	this.getInfo = function() {
 		return {
 				url : urlBox.getInfo(),
-				width : welContainer.width()
+				width : welContainer.is(":visible") ? welContainer.width() : 0
 		};
 		return htResult;
 	}
@@ -199,7 +211,10 @@ var viewer = new (function() {
 	this.init = function(_welChannelList) {
 		welChannelList = _welChannelList;
 		for (var i = 0; i < welChannelList.length; i++) {
-			aChannel.push(new Channel(welChannelList.eq(i)));
+			aChannel.push(new Channel({
+				container : welChannelList.eq(i),
+				onResize : resizeWidth
+			}));
 		}
 		
 		drawMenu();
@@ -212,6 +227,15 @@ var viewer = new (function() {
 		for (var i = 0; i < aSite.length; i++) {
 			aChannel[i].show(aSite[i]);
 		}
+		resizeWidth();
+	}
+	
+	var resizeWidth = function() {
+		var totalWidth = 0;
+		for (var i = 0; i < aChannel.length; i++) {
+			totalWidth += aChannel[i].getInfo().width + 2;
+		}
+		$(".viewer").width(totalWidth);
 	}
 	
 	var drawMenu = function() {
