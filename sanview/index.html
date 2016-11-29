@@ -27,6 +27,11 @@
 .channel {float:left;/*min-width:300px;width:30%;*/width:350px;margin-right:1px;}
 .channel .url {width:250px;float:left;}
 .channel iframe {border-width:1px;width:100%;height:100%;min-height:450px;}
+
+.counter { float:right;font-size:11px;}
+.counter .txt {color:RED;margin-right:7px;width:40px;}
+.counter .cnt {text-align:right;width:30px;}
+
 </style>
 </head>
 <body>
@@ -41,9 +46,16 @@
 		<div class="tools">
 			<a class="btn btn-primary geturl" href="#">URL 생성</a>
 			<a class="btn btn-primary addChannel" href="#">창 추가</a>
+			
+			<div id="overallCounter" class="counter">
+				<span class="txt">TOTAL</span><span class="cnt total"></span><br>
+				<span class="txt">TODAY</span><span class="cnt today"></span>
+			</div>
+
 		</div>
+		
 	</div>
-	
+
     <div class="viewer">
     	<div class="channel" id="frm1" style="display:none;">
 			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">↙</a>
@@ -88,6 +100,27 @@ var aSiteMapList = [
 	//{name:"쇼핑",list:["http://m.gmarket.com", "http://mobile.auction.co.kr/", "blank.html"]},
 	{name:"소셜커머스",list:[new Url("쿠팡", "http://m.coupang.com/nm/"), new Url("티몬", "http://m.ticketmonster.co.kr"), new Url("위메프", "http://m.wemakeprice.com")]}
 ];
+
+var Counter = function(_id, _welParent) {
+	var that = this;
+	var id = _id;
+	var welParent = _welParent;
+	
+	$.ajax({
+		url : "http://kongjis.woobi.co.kr/counter.php",
+		data : {id:id},
+		method : "POST",
+		success : function(res) {
+			var data = res.split("|");
+			paint(data[0], data[1]);
+		}
+	});
+	
+	var paint = function(totalCnt, todayCnt) {
+		welParent.find(".total").text(totalCnt.format());
+		welParent.find(".today").text(todayCnt.format());
+	}
+}
 
 /**
  * htOption.container
@@ -350,6 +383,8 @@ $(document).ready(function() {
 		we.preventDefault();
 		location.hash = JSON.stringify(viewer.getInfo());
 	});
+	
+	new Counter("sanview", $("#overallCounter"));
 });
 
 function resizeIframes() {
@@ -360,8 +395,25 @@ function resizeIframes() {
     });
 }
 
-$(window).on('resize', resizeIframes);
+Number.prototype.format = function(){
+    if(this==0) return 0;
+ 
+    var reg = /(^[+-]?\d+)(\d{3})/;
+    var n = (this + '');
+ 
+    while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
+ 
+    return n;
+};
 
+String.prototype.format = function(){
+    var num = parseFloat(this);
+    if( isNaN(num) ) return "0";
+ 
+    return num.format();
+};
+
+$(window).on('resize', resizeIframes);
 if (console) {
 	console.log = function() {};
 	console.error = function() {};
