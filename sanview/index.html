@@ -8,13 +8,25 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+<link rel="stylesheet" href="css/bootstrap.min.css"/>
 
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"/>
 
+<link rel="stylesheet" href="css/simple-sidebar.css"/>
+
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<link href="https://fonts.googleapis.com/css?family=Amaranth" rel="stylesheet">
+
+<script src="js/common.js"></script>
+<script type="text/javascript">
+loadScript("js/urlbox.js", true);
+loadScript("js/channel.js", true);
+loadScript("js/viewer.js", true);
+</script>
+<!-- script src="js/view.js"></script-->
 
 <style type="text/css">
 .viewer {}
@@ -32,10 +44,34 @@
 .counter .txt {color:RED;margin-right:7px;width:40px;}
 .counter .cnt {text-align:right;width:30px;}
 
+.topbrand {height:50px;text-align:center;width:100%;background-color:#0070C0;font-size:32px;font-family:'Amaranth',sans-serif;color:#EEEEEE}
+
+.category_menu .title {color:#FFFFFF;font-size:18px;margin-left:10px;margin-right:10px;}
+
+iframe {background-color:#ffffff;}
 </style>
 </head>
-<body>
-<div class="container-fluid">
+<body style="background-color:#4597D1">
+    	<div class="topbrand">
+    	kiwi
+    	</div>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav leftMenu">
+<!--
+                <li class="sidebar-brand">
+                    <span>
+                        quick view
+                    </span>
+                </li>
+-->
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
 	<div class="top_menu">
 		<div class="category_menu"></div>
 
@@ -89,261 +125,107 @@
     </div>
 </div>
 <script type="text/javascript">
-var Url = function(name, url) {
-	this.name = name;
-	this.url = url;
+
+var Category = function(_name, _id, _parent) {
+	this.name = _name;
+	this.id = _id;
+	this.parent = _parent ? _parent : null;
 }
 
-var aSiteMapList = [
-	{name:"포털",list:[new Url("네이버", "http://m.naver.com"), new Url("다음", "http://m.daum.net"), new Url("네이트", "http://m.nate.com")]},
-	{name:"웹툰",list:[new Url("네이버 웹툰", "http://m.comic.naver.com/"), new Url("다음 웹툰", "http://m.webtoon.daum.net"), new Url("네이트 웹툰", "http://m.comics.nate.com")]},
-	//{name:"쇼핑",list:["http://m.gmarket.com", "http://mobile.auction.co.kr/", "blank.html"]},
-	{name:"소셜커머스",list:[new Url("쿠팡", "http://m.coupang.com/nm/"), new Url("티몬", "http://m.ticketmonster.co.kr"), new Url("위메프", "http://m.wemakeprice.com")]}
+var aCategories = [
+               {"id":1,"name":"포털","parent":null},
+               {"id":2,"name":"뉴스","parent":null},
+               
+               {"id":3,"name":"홈","parent":1},
+               {"id":4,"name":"웹툰","parent":1},
+               
+               {"id":6,"name":"조중동","parent":2},
+               {"id":7,"name":"오마이","parent":2},
+               
+               {"id":9,"name":"네이버","parent":3,data:{"url":"http://m.naver.com","width":350}},
+               {"id":10,"name":"다음","parent":3,data:{"url":"http://m.daum.net","width":350}},
+               {"id":11,"name":"네이트","parent":3,data:{"url":"http://m.nate.com","width":350}},
+               
+               {"id":12,"name":"네이버 웹툰","parent":4,data:{"url":"http://m.comic.naver.com","width":350}},
+               {"id":13,"name":"다음 웹툰","parent":4,data:{"url":"http://m.webtoon.daum.net","width":350}},
+               {"id":14,"name":"네이트 웹툰","parent":4,data:{"url":"http://m.comics.nate.com","width":350}},
+
+               {"id":15,"name":"조선","parent":6,data:{"url":"http://m.chosun.com","width":350}},
+               {"id":16,"name":"중앙","parent":6,data:{"url":"http://mnews.joins.com/","width":350}},
+               {"id":17,"name":"동아","parent":6,data:{"url":"http://m.donga.com/","width":350}},
+               
+               {"id":18,"name":"오마이","parent":7,data:{"url":"http://m.ohmynews.com/","width":350}},
+               {"id":19,"name":"프레시안","parent":7,data:{"url":"http://m.pressian.com/m/","width":350}},
+               {"id":20,"name":"미디어오늘","parent":7,data:{"url":"http://m.mediatoday.co.kr/","width":350}}
 ];
 
-var Counter = function(_id, _welParent) {
-	var that = this;
-	var id = _id;
-	var welParent = _welParent;
-	
-	$.ajax({
-		url : "http://kongjis.woobi.co.kr/counter.php",
-		data : {id:id},
-		method : "POST",
-		success : function(res) {
-			var data = res.split("|");
-			paint(data[0], data[1]);
+function getherSubCategories(parentId) {
+	var aList = [];
+	for (var i = 0; i < aCategories.length; i++) {
+		var catg = aCategories[i];
+		if (!catg.id) {
+			continue;
 		}
-	});
-	
-	var paint = function(totalCnt, todayCnt) {
-		welParent.find(".total").text(totalCnt.format());
-		welParent.find(".today").text(todayCnt.format());
-	}
-}
-
-/**
- * htOption.container
- * htOption.search
- */
-var UrlBox = function(htOption) {
-	var that = this;
-	var welContainer, welUrlBox, welBtnSearch;
-	
-	var init = function() {
-		welContainer = $(htOption.container);
-		welUrlBox = welContainer.find("input.url");
-		welBtnSearch = welContainer.find(".btn.search");
-		
-		welBtnSearch.bind("click", function(we) {
-			we.preventDefault();
-			search();
-		});
-		
-		welUrlBox.keypress(function(e) {
-			if (e.keyCode == 13) {
-				search();
+		if (catg.parent == parentId) {
+			var aSubCategories = getherSubCategories(catg.id);
+			if (aSubCategories.length > 0) {
+				catg.list = aSubCategories;
 			}
-		});
+			delete catg["id"];
+			delete catg["parent"];
+			aList.push(catg);
+		}
 	}
-	
-	this.change = function(sUrl) {
-		welUrlBox.val(sUrl);
-		search();
-	}
-	
-	var search = function() {
-		htOption.search(welUrlBox.val());
-	}
-	
-	this.getInfo = function() {
-		return welUrlBox.val();
-	}
-	
-	this.focus = function() {
-		welUrlBox.focus();
-	}
-	
-	init();
-}
+	return aList;
+} 
+var aMenuTree = getherSubCategories(null);
 
-/**
- * htOption.container
- * htOption.onResize
- */
-var Channel = function(_htOption) {
-	var that = this;
-	var welContainer, urlBox, welIframe;
-	var welBtnNarrow, welBtnWide;
-
-	var htOption = {
-			container : null,
-			onResize : function() {}
-	};
-
-	var MIN_WIDTH = 350;
+function drawMenu(aMenuTree, welMainMenus, welSubMenus) {
 	
-	var init = function() {
-		htOption = _htOption;
-		welContainer = $(htOption.container);
-		urlBox = new UrlBox({
-			container : welContainer,
-			search : function(sUrl) {
-				if (/^http[s]?:\/\//.test(sUrl) != true) {
-					urlBox.change("http://" + sUrl);
-					return;
-				}
-				welIframe.attr("src", sUrl);
-			}
-		});
-		welIframe = welContainer.find("iframe");
-		welBtnNarrow = welContainer.find(".narrow");
-		welBtnWide = welContainer.find(".wide");
-		
-		welBtnNarrow.bind("click", function(we) {
-			we.preventDefault();
-			var width = Math.max(welContainer.width() - 50, MIN_WIDTH);
-			welContainer.width(width);
-			htOption.onResize();
-		});
-		
-		welBtnWide.bind("click", function(we) {
-			we.preventDefault();
-			var width = welContainer.width() + 50;
-			welContainer.width(width);
-			htOption.onResize();
-		})
-	}
-	
-	this.search = function(sUrl) {
-		urlBox.change(sUrl);
-	}
-	
-	this.show = function(htChannelInfo) {
-		welContainer.show();
-		if (htChannelInfo && htChannelInfo.url) {
-			that.search(htChannelInfo.url);
-		}
-		if (htChannelInfo && htChannelInfo.width) {
-			welContainer.width(htChannelInfo.width);
-		}
-		htOption.onResize();
-	}
-	
-	this.hide = function() {
-		welContainer.hide();
-		htOption.onResize();
-	}
-	
-	this.close = function() {
-		welContainer.hide();
-		welIframe.attr("src", "blank.html");
-	}
-	
-	this.isActive = function() {
-		return welContainer.is(":visible");
-	}
-	
-	this.focus = function() {
-		urlBox.focus();
-	}
-	
-	this.getInfo = function() {
-		return {
-				url : urlBox.getInfo(),
-				width : that.isActive() ? welContainer.width() : 0
-		};
-		return htResult;
-	}
-	
-	init();
-}
-
-var viewer = new (function() {
-	var that = this;
-	var aChannel = [];
-	var welChannelList;
-	
-	this.init = function(_welChannelList) {
-		welChannelList = _welChannelList;
-		for (var i = 0; i < welChannelList.length; i++) {
-			aChannel.push(new Channel({
-				container : welChannelList.eq(i),
-				onResize : resizeWidth
-			}));
-		}
-		
-		drawMenu();
-	}
-	
-	this.changeCategory = function(aSite) {
-		for (var i = 0; i < aChannel.length; i++) {
-			aChannel[i].close();
-		}
-		for (var i = 0; i < aSite.length; i++) {
-			if (!aSite[i].url) {
-				continue;
-			}
-			aChannel[i].show(aSite[i]);
-		}
-		resizeWidth();
-	}
-	
-	var resizeWidth = function() {
-		var totalWidth = 0;
-		for (var i = 0; i < aChannel.length; i++) {
-			totalWidth += aChannel[i].getInfo().width + 2;
-		}
-		$(".viewer").width(totalWidth);
-	}
-	
-	var drawMenu = function() {
-		var welCategoryMenu = $(".category_menu");
-		welCategoryMenu.html("");
-		for (var i = 0; i < aSiteMapList.length; i++) {
-			var htData = aSiteMapList[i];
-			var welButton = $("<a class='btn btn-info menu' href='#'>" + htData.name + "</a>");
-			var makeFunction = function(htSiteMap) {
+	var paintTop = function() {
+		for (var i = 0; i < aMenuTree.length; i++) {
+			var htMenu = aMenuTree[i];
+			var welMenu = $("<li><a href='#'>" + htMenu.name + "</a></li>");
+			welMainMenus.append(welMenu);
+			
+			welMenu.click(function(_htMenu) {
 				return function(we) {
 					we.preventDefault();
-					that.changeCategory(htSiteMap.list);
+					paintSubMenus(_htMenu);
 				}
-			}
-			welButton.bind("click", makeFunction(htData));
-			welCategoryMenu.append(welButton);
+			}(htMenu));
+		}
+	}
+
+	var paintSubMenus = function(htMenu) {
+		welSubMenus.html("");
+		
+		var welTitle = $("<span class='title'>" + htMenu.name + "</span>");
+		welSubMenus.append(welTitle);
+		
+		var aList = htMenu.list;
+		for (var i = 0; i < aList.length; i++) {
+			var htData = aList[i];
+			var welMenu = $("<a class='btn btn-info menu' href='#'>" + htData.name + "</a>");
+			welSubMenus.append(welMenu);
+			welMenu.click(function(_htData) {
+				return function(we) {
+					we.preventDefault();
+					var list = [];
+					for (var j = 0; j < _htData.list.length; j++) {
+						var ht = _htData.list[j];
+						list.push(ht.data);
+					}
+					
+					viewer.changeCategory(list);
+				}
+			}(htData));
 		}
 	}
 	
-	this.getInfo = function() {
-		var htResult = {
-				list : []
-		};
-		for (var i = 0; i < aChannel.length; i++) {
-			var htInfo = aChannel[i].getInfo();
-			if (!aChannel[i].isActive()) {
-				continue;
-			}
-			htResult.list.push(htInfo);
-		}
-		return htResult;
-	}
-	
-	this.setInfo = function(htInfo) {
-		that.changeCategory(htInfo.list);
-	}
-	
-	this.addChannel = function() {
-		for (var i = 0; i < aChannel.length; i++) {
-			if (aChannel[i].isActive()) {
-				continue;
-			}
-			aChannel[i].show();
-			aChannel[i].focus();
-			return;
-		}
-		alert("검색창은 최대 " + aChannel.length + "개까지만 열 수 있습니다.");
-	}
-})();
+	paintTop();
+}
+drawMenu(aMenuTree, $(".leftMenu"), $(".category_menu"));
 
 
 $(document).ready(function() {
@@ -395,41 +277,16 @@ function resizeIframes() {
     });
 }
 
-Number.prototype.format = function(){
-    if(this==0) return 0;
- 
-    var reg = /(^[+-]?\d+)(\d{3})/;
-    var n = (this + '');
- 
-    while (reg.test(n)) n = n.replace(reg, '$1' + ',' + '$2');
- 
-    return n;
-};
-
-String.prototype.format = function(){
-    var num = parseFloat(this);
-    if( isNaN(num) ) return "0";
- 
-    return num.format();
-};
-
 $(window).on('resize', resizeIframes);
-if (console) {
-	console.log = function() {};
-	console.error = function() {};
-}
 
 
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-</script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-87941781-1', 'auto');
-  ga('send', 'pageview');
+ga('create', 'UA-87941781-1', 'auto');
+ga('send', 'pageview');
 
 </script>
 </body>
