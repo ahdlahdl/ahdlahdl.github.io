@@ -33,24 +33,29 @@ loadScript("js/viewer.js", true);
 </script>
 
 <style type="text/css">
-.viewer {}
 
 .top_menu {margin-bottom:5px;}
 .category_menu {float:left;}
 .total_search {margin-left:10px;margin-right:10px;float:left;}
 .total_search .url {margin-left:10px;width:200px;float:left;}
 
-.channel {float:left;/*min-width:300px;width:30%;*/width:350px;margin-right:1px;}
+.channel {float:left;/*min-width:300px;width:30%;*/width:350px;margin-left:5px;}
 .channel .url {width:250px;float:left;}
 .channel iframe {border-width:1px;width:100%;height:100%;min-height:450px;}
 
-.counter { float:right;font-size:11px;}
-.counter .txt {color:RED;margin-right:7px;width:40px;}
-.counter .cnt {text-align:right;width:30px;}
+.tools {float:right;margin-right:20px;}
+.counter { float:right;font-size:11px;margin-left:20px;}
+.counter .txt {color:#febc00;margin-right:7px;width:40px;}
+.counter .cnt {color:#eaeaea;text-align:right;width:30px;}
 
 .topbrand {height:50px;text-align:center;width:100%;background-color:#0070C0;font-size:32px;font-family:'Amaranth',sans-serif;color:#EEEEEE}
 
+.category_menu {}
 .category_menu .title {color:#FFFFFF;font-size:18px;margin-left:10px;margin-right:10px;}
+
+.cleaner {float:left;width:100%;height:10px;}
+
+.viewer {float:none;}
 
 iframe {background-color:#ffffff;}
 </style>
@@ -78,10 +83,6 @@ iframe {background-color:#ffffff;}
 
 	<div class="top_menu">
 		<div class="category_menu"></div>
-
-		<div class="total_search">
-			<input class="form-control url" type="text"/><a class="btn btn-success search" href="#">검색</a>
-		</div>
 		
 		<div class="tools">
 			<a class="btn btn-primary geturl" href="#">URL 생성</a>
@@ -91,10 +92,11 @@ iframe {background-color:#ffffff;}
 				<span class="txt">TOTAL</span><span class="cnt total"></span><br>
 				<span class="txt">TODAY</span><span class="cnt today"></span>
 			</div>
-
 		</div>
 		
 	</div>
+	
+	<div class="cleaner">&nbsp;</div>
 
     <div class="viewer">
     	<div class="channel" id="frm1" style="display:none;">
@@ -186,8 +188,11 @@ var aCategories = [
 {"name":"책","id":503,"parent":500},	{"id":5031,"parent":503,"data":{"url":"http://m.yes24.com/Home/index"}},	{"id":5032,"parent":503,"data":{"url":"http://m.aladin.co.kr/m/main.aspx"}},	{"id":5033,"parent":503,"data":{"url":"http://www.ypbooks.co.kr/m_main.yp"}},	{"id":5034,"parent":503,"data":{"url":"http://mobile.kyobobook.co.kr"}},
 {"name":"책(베셀)","id":504,"parent":500},	{"id":5041,"parent":504,"data":{"url":"http://m.yes24.com/Home/best"}},	{"id":5042,"parent":504,"data":{"url":"http://m.aladin.co.kr/m/mbest.aspx?BestType=bestseller&BranchType=1&start=alayer"}},	{"id":5043,"parent":504,"data":{"url":"http://www.ypbooks.co.kr/m_bestseller.yp"}},	{"id":5044,"parent":504,"data":{"url":"http://m.book.naver.com/bestsell/list.nhn?category.code=total"}},
 {"name":"공연티켓","id":505,"parent":500},	{"id":5051,"parent":505,"data":{"url":"http://mticket.interpark.com/"}},	{"id":5052,"parent":505,"data":{"url":"http://m.ticketlink.co.kr/"}},	{"id":5053,"parent":505,"data":{"url":"http://m.ticket.yes24.com/"}},	{"id":5054,"parent":505,"data":{"url":""}},
+/*
 {"name":"SNS","id":600,"parent":null},				
-{"name":"홈","id":601,"parent":600},	{"id":6011,"parent":601,"data":{"url":"https://m.facebook.com"}},	{"id":6012,"parent":601,"data":{"url":"https://www.instagram.com/?&_suid=148052824541108370265173725784"}},	{"id":6013,"parent":601,"data":{"url":"http://m.band.us/home"}},	{"id":6014,"parent":601,"data":{"url":"https://mobile.twitter.com/i/streams/category/687094916380377110"}}
+{"name":"홈","id":601,"parent":600},	{"id":6011,"parent":601,"data":{"url":"https://m.facebook.com"}},	{"id":6012,"parent":601,"data":{"url":"https://www.instagram.com/?&_suid=148052824541108370265173725784"}},	{"id":6013,"parent":601,"data":{"url":"http://m.band.us/home"}},	{"id":6014,"parent":601,"data":{"url":"https://mobile.twitter.com/i/streams/category/687094916380377110"}},
+*/
+{"name":"","id":99900,"parent":null}
 ];
 
 function getherSubCategories(parentId) {
@@ -212,12 +217,13 @@ function getherSubCategories(parentId) {
 } 
 var aMenuTree = getherSubCategories(null);
 
-function drawMenu(aMenuTree, welMainMenus, welSubMenus) {
+var MenuBox = function(aMenuTree, welMainMenus, welSubMenus) {
+	var that = this;
 	
 	var paintTop = function() {
 		for (var i = 0; i < aMenuTree.length; i++) {
 			var htMenu = aMenuTree[i];
-			var welMenu = $("<li><a href='#'>" + htMenu.name + "</a></li>");
+			var welMenu = $("<li class='_topMenuItem'><a href='#'>" + htMenu.name + "</a></li>");
 			welMainMenus.append(welMenu);
 			
 			welMenu.click(function(_htMenu) {
@@ -253,12 +259,18 @@ function drawMenu(aMenuTree, welMainMenus, welSubMenus) {
 				}
 			}(htData));
 		}
+		
+		welSubMenus.find(".btn:first").trigger("click");
+	}
+	
+	this.selectTopMenu = function(idx) {
+		var welSelMenu = welMainMenus.find("._topMenuItem").eq(idx);
+		welSelMenu.trigger("click");
 	}
 	
 	paintTop();
 }
-drawMenu(aMenuTree, $(".leftMenu"), $(".category_menu"));
-
+var menuBox = new MenuBox(aMenuTree, $(".leftMenu"), $(".category_menu"));
 
 $(document).ready(function() {
 	viewer.init($(".channel"));
@@ -277,17 +289,6 @@ $(document).ready(function() {
 
 	resizeIframes();
 	
-	var totalSearchBox = new UrlBox({
-		container : $(".total_search"),
-		search : function(keyword) {
-			viewer.changeCategory([
-			                       new Url("네이버", "http://m.search.naver.com/search.naver?query=" + keyword),
-			                       new Url("다음", "https://m.search.daum.net/search?q=" + keyword),
-			                       new Url("네이트", "https://m.search.daum.net/nate?w=tot&thr=mnms&q=" + keyword)
-		    ]);
-		}
-	});
-	
 	$(".addChannel").click(function(we) {
 		we.preventDefault();
 		viewer.addChannel();
@@ -298,6 +299,8 @@ $(document).ready(function() {
 		location.hash = JSON.stringify(viewer.getInfo());
 	});
 	
+	menuBox.selectTopMenu(0);
+	
 	new Counter("sanview", $("#overallCounter"));
 });
 
@@ -305,7 +308,7 @@ function resizeIframes() {
 	var win = $(this);
     var awelIframe = $(".channel iframe");
     awelIframe.each(function() {
-    	$(this).height(win.height() - 100);
+    	$(this).height(win.height() - 150);
     });
 }
 

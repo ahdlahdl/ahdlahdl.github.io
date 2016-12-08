@@ -12,7 +12,7 @@ var viewer = new (function() {
 			}));
 		}
 		
-		drawMenu();
+		//drawMenu();
 	}
 	
 	this.changeCategory = function(aSite) {
@@ -31,11 +31,12 @@ var viewer = new (function() {
 	var resizeWidth = function() {
 		var totalWidth = 0;
 		for (var i = 0; i < aChannel.length; i++) {
-			totalWidth += aChannel[i].getInfo().width + 2;
+			totalWidth += aChannel[i].getInfo().width + 5;
 		}
 		$(".viewer").width(totalWidth);
 	}
 	
+	/*
 	var drawMenu = function() {
 		var welCategoryMenu = $(".category_menu");
 		welCategoryMenu.html("");
@@ -52,6 +53,7 @@ var viewer = new (function() {
 			welCategoryMenu.append(welButton);
 		}
 	}
+	*/
 	
 	this.getInfo = function() {
 		var htResult = {
