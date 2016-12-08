@@ -137,37 +137,65 @@ var Category = function(_name, _id, _parent) {
 }
 
 var aCategories = [
-               {"id":1,"name":"포털","parent":null},
-               {"id":2,"name":"뉴스","parent":null},
-               
-               {"id":3,"name":"홈","parent":1},
-               {"id":4,"name":"웹툰","parent":1},
-               
-               {"id":6,"name":"조중동","parent":2},
-               {"id":7,"name":"오마이","parent":2},
-               
-               {"id":9,"name":"네이버","parent":3,data:{"url":"http://m.naver.com","width":350}},
-               {"id":10,"name":"다음","parent":3,data:{"url":"http://m.daum.net","width":350}},
-               {"id":11,"name":"네이트","parent":3,data:{"url":"http://m.nate.com","width":350}},
-               
-               {"id":12,"name":"네이버 웹툰","parent":4,data:{"url":"http://m.comic.naver.com","width":350}},
-               {"id":13,"name":"다음 웹툰","parent":4,data:{"url":"http://m.webtoon.daum.net","width":350}},
-               {"id":14,"name":"네이트 웹툰","parent":4,data:{"url":"http://m.comics.nate.com","width":350}},
-
-               {"id":15,"name":"조선","parent":6,data:{"url":"http://m.chosun.com","width":350}},
-               {"id":16,"name":"중앙","parent":6,data:{"url":"http://mnews.joins.com/","width":350}},
-               {"id":17,"name":"동아","parent":6,data:{"url":"http://m.donga.com/","width":350}},
-               
-               {"id":18,"name":"오마이","parent":7,data:{"url":"http://m.ohmynews.com/","width":350}},
-               {"id":19,"name":"프레시안","parent":7,data:{"url":"http://m.pressian.com/m/","width":350}},
-               {"id":20,"name":"미디어오늘","parent":7,data:{"url":"http://m.mediatoday.co.kr/","width":350}}
+{"name":"포털","id":100,"parent":null},				
+{"name":"홈","id":101,"parent":100},	{"id":1011,"parent":101,"data":{"url":"https://m.naver.com"}},	{"id":1012,"parent":101,"data":{"url":"http://m.daum.net"}},	{"id":1013,"parent":101,"data":{"url":"http://m.nate.com"}},	{"id":1014,"parent":101,"data":{"url":"http://m.zum.com/news/home"}},
+{"name":"뉴스","id":102,"parent":100},	{"id":1021,"parent":102,"data":{"url":"http://news.naver.com"}},	{"id":1022,"parent":102,"data":{"url":"http://m.media.daum.net"}},	{"id":1023,"parent":102,"data":{"url":"http://m.news.nate.com"}},	{"id":1024,"parent":102,"data":{"url":""}},
+{"name":"연예","id":103,"parent":100},	{"id":1031,"parent":103,"data":{"url":"http://m.entertain.naver.com"}},	{"id":1032,"parent":103,"data":{"url":"http://m.media.daum.net/m/entertain"}},	{"id":1033,"parent":103,"data":{"url":"http://m.news.nate.com/ent?sq=633678&pollSQ=22845"}},	{"id":1034,"parent":103,"data":{"url":""}},
+{"name":"스포츠","id":104,"parent":100},	{"id":1041,"parent":104,"data":{"url":"http://m.sports.naver.com"}},	{"id":1042,"parent":104,"data":{"url":"http://m.sports.media.daum.net"}},	{"id":1043,"parent":104,"data":{"url":"http://m.news.nate.com/spo?sq=625788"}},	{"id":1044,"parent":104,"data":{"url":""}},
+{"name":"금융","id":105,"parent":100},	{"id":1051,"parent":105,"data":{"url":"http://m.stock.naver.com"}},	{"id":1052,"parent":105,"data":{"url":"http://m.finance.daum.net"}},	{"id":1053,"parent":105,"data":{"url":""}},	{"id":1054,"parent":105,"data":{"url":"https://stock.kakao.com/m"}},
+{"name":"웹툰","id":106,"parent":100},	{"id":1061,"parent":106,"data":{"url":"http://m.comic.naver.com"}},	{"id":1062,"parent":106,"data":{"url":"http://m.webtoon.daum.net"}},	{"id":1063,"parent":106,"data":{"url":"http://m.comics.nate.com"}},	{"id":1064,"parent":106,"data":{"url":"http://page.kakao.com/main?categoryUid=10&subCategoryUid=0&navi=1&inkatalk=0"}},
+{"name":"웹소설","id":107,"parent":100},	{"id":1071,"parent":107,"data":{"url":"http://m.novel.naver.com"}},	{"id":1072,"parent":107,"data":{"url":""}},	{"id":1073,"parent":107,"data":{"url":"http://mnovel.nate.com"}},	{"id":1074,"parent":107,"data":{"url":"http://page.kakao.com/main?categoryUid=11&subCategoryUid=1100&navi=1&inkatalk=0&inChannel=1"}},
+{"name":"동영상","id":108,"parent":100},	{"id":1081,"parent":108,"data":{"url":"http://m.tvcast.naver.com"}},	{"id":1082,"parent":108,"data":{"url":"http://m.tvpot.daum.net"}},	{"id":1083,"parent":108,"data":{"url":"http://m.pann.nate.com/video"}},	{"id":1084,"parent":108,"data":{"url":"http://tv.kakao.com"}},
+{"name":"영화","id":109,"parent":100},	{"id":1091,"parent":109,"data":{"url":"http://m.movie.naver.com"}},	{"id":1092,"parent":109,"data":{"url":""}},	{"id":1093,"parent":109,"data":{"url":"http://m.ticket.movie.nate.com"}},	{"id":1094,"parent":109,"data":{"url":""}},
+{"name":"책","id":110,"parent":100},	{"id":1101,"parent":110,"data":{"url":"http://m.book.naver.com"}},	{"id":1102,"parent":110,"data":{"url":"http://m.book.daum.net"}},	{"id":1103,"parent":110,"data":{"url":""}},	{"id":1104,"parent":110,"data":{"url":""}},
+{"name":"날씨","id":111,"parent":100},	{"id":1111,"parent":111,"data":{"url":"https://m.weather.naver.com"}},	{"id":1112,"parent":111,"data":{"url":""}},	{"id":1113,"parent":111,"data":{"url":"http://m.weather.nate.com"}},	{"id":1114,"parent":111,"data":{"url":""}},
+{"name":"자동차","id":112,"parent":100},	{"id":1121,"parent":112,"data":{"url":"http://m.auto.naver.com"}},	{"id":1122,"parent":112,"data":{"url":"http://m.auto.daum.net"}},	{"id":1123,"parent":112,"data":{"url":""}},	{"id":1124,"parent":112,"data":{"url":""}},
+{"name":"컨텐츠","id":113,"parent":100},	{"id":1131,"parent":113,"data":{"url":"http://m.bboom.naver.com"}},	{"id":1132,"parent":113,"data":{"url":"http://1boon.kakao.com"}},	{"id":1133,"parent":113,"data":{"url":"http://www.itpic.co.kr"}},	{"id":1134,"parent":113,"data":{"url":""}},
+{"name":"부동산","id":114,"parent":100},	{"id":1141,"parent":114,"data":{"url":"http://m.land.naver.com"}},	{"id":1142,"parent":114,"data":{"url":"https://m.realestate.daum.net"}},	{"id":1143,"parent":114,"data":{"url":""}},	{"id":1144,"parent":114,"data":{"url":""}},
+{"name":"전체서비스","id":115,"parent":100},	{"id":1151,"parent":115,"data":{"url":"https://m.naver.com/aside/more.html?type=sub"}},	{"id":1152,"parent":115,"data":{"url":"http://m.daum.net/site.daum?t__nil_footer=sitemap"}},	{"id":1153,"parent":115,"data":{"url":"http://m.nate.com/sitemap.html"}},	{"id":1154,"parent":115,"data":{"url":""}},
+{"name":"뉴스","id":200,"parent":null},				
+{"name":"포털","id":201,"parent":200},	{"id":2011,"parent":201,"data":{"url":"http://news.naver.com"}},	{"id":2012,"parent":201,"data":{"url":"http://m.media.daum.net"}},	{"id":2013,"parent":201,"data":{"url":"http://m.news.nate.com"}},	{"id":2014,"parent":201,"data":{"url":""}},
+{"name":"조중동","id":202,"parent":200},	{"id":2021,"parent":202,"data":{"url":"http://m.chosun.com"}},	{"id":2022,"parent":202,"data":{"url":"http://mnews.joins.com"}},	{"id":2023,"parent":202,"data":{"url":"동아일보"}},	{"id":2024,"parent":202,"data":{"url":""}},
+{"name":"한경오","id":203,"parent":200},	{"id":2031,"parent":203,"data":{"url":"http://m.hani.co.kr"}},	{"id":2032,"parent":203,"data":{"url":"http://m.khan.co.kr"}},	{"id":2033,"parent":203,"data":{"url":"http://m.ohmynews.com"}},	{"id":2034,"parent":203,"data":{"url":""}},
+{"name":"","id":204,"parent":200},	{"id":2041,"parent":204,"data":{"url":""}},	{"id":2042,"parent":204,"data":{"url":""}},	{"id":2043,"parent":204,"data":{"url":""}},	{"id":2044,"parent":204,"data":{"url":""}},
+{"name":"","id":205,"parent":200},	{"id":2051,"parent":205,"data":{"url":""}},	{"id":2052,"parent":205,"data":{"url":""}},	{"id":2053,"parent":205,"data":{"url":""}},	{"id":2054,"parent":205,"data":{"url":""}},
+{"name":"방송3사","id":206,"parent":200},	{"id":2061,"parent":206,"data":{"url":"http://m.sbs.co.kr/main.do"}},	{"id":2062,"parent":206,"data":{"url":"http://mn.kbs.co.kr"}},	{"id":2063,"parent":206,"data":{"url":"http://m.imbc.com/"}},	{"id":2064,"parent":206,"data":{"url":""}},
+{"name":"종편","id":207,"parent":200},	{"id":2071,"parent":207,"data":{"url":"http://mnews.jtbc.joins.com/"}},	{"id":2072,"parent":207,"data":{"url":"http://m.ichannela.com"}},	{"id":2073,"parent":207,"data":{"url":"http://news.tvchosun.com/mobile/svc/news.html"}},	{"id":2074,"parent":207,"data":{"url":"http://m.mbn.co.kr/news/main.mbn"}},
+{"name":"통신사","id":208,"parent":200},	{"id":2081,"parent":208,"data":{"url":"http://m.yna.co.kr/kr/"}},	{"id":2082,"parent":208,"data":{"url":"http://mobile.newsis.com/"}},	{"id":2083,"parent":208,"data":{"url":"http://m.gukjenews.com/index.html"}},	{"id":2084,"parent":208,"data":{"url":""}},
+{"name":"전문채널","id":209,"parent":200},	{"id":2091,"parent":209,"data":{"url":"연합뉴스TV"}},	{"id":2092,"parent":209,"data":{"url":"http://m.ytn.co.kr/"}},	{"id":2093,"parent":209,"data":{"url":""}},	{"id":2094,"parent":209,"data":{"url":""}},
+{"name":"스포츠","id":210,"parent":200},	{"id":2101,"parent":210,"data":{"url":""}},	{"id":2102,"parent":210,"data":{"url":""}},	{"id":2103,"parent":210,"data":{"url":""}},	{"id":2104,"parent":210,"data":{"url":""}},
+{"name":"포스트미디어","id":211,"parent":200},	{"id":2111,"parent":211,"data":{"url":"http://m.wikitree.co.kr/"}},	{"id":2112,"parent":211,"data":{"url":"http://m.insight.co.kr/"}},	{"id":2113,"parent":211,"data":{"url":""}},	{"id":2114,"parent":211,"data":{"url":""}},
+{"name":"쇼핑","id":300,"parent":null},				
+{"name":"소셜커머스","id":301,"parent":300},	{"id":3011,"parent":301,"data":{"url":"http://m.coupang.com"}},	{"id":3012,"parent":301,"data":{"url":"http://m.wemakeprice.com"}},	{"id":3013,"parent":301,"data":{"url":"http://m.ticketmonster.co.kr"}},	{"id":3014,"parent":301,"data":{"url":""}},
+{"name":"마트","id":302,"parent":300},	{"id":3021,"parent":302,"data":{"url":"http://m.emart.ssg.com"}},	{"id":3022,"parent":302,"data":{"url":"http://m.lottemart.com/mobile/corners.do"}},	{"id":3023,"parent":302,"data":{"url":"http://m.homeplus.co.kr"}},	{"id":3024,"parent":302,"data":{"url":"http://m.nhamarket.com"}},
+{"name":"쇼핑몰","id":303,"parent":300},	{"id":3031,"parent":303,"data":{"url":"http://mobile.gmarket.co.kr"}},	{"id":3033,"parent":303,"data":{"url":"http://m.interpark.com"}},	{"id":3034,"parent":303,"data":{"url":"http://mobile.auction.co.kr/"}},
+{"name":"백화점","id":304,"parent":300},	{"id":3041,"parent":304,"data":{"url":"http://mobile.galleria.co.kr"}},	{"id":3042,"parent":304,"data":{"url":"http://m.akmall.com"}},	{"id":3043,"parent":304,"data":{"url":"m.shinsegaemall.ssg.com"}},
+{"name":"여행","id":305,"parent":300},	{"id":3051,"parent":305,"data":{"url":"http://m.hanatour.com"}},	{"id":3052,"parent":305,"data":{"url":"http://m.onlinetour.co.kr"}},	{"id":3053,"parent":305,"data":{"url":"http://m.ybtour.co.kr"}},	{"id":3054,"parent":305,"data":{"url":"http://m.webtour.com"}},
+{"name":"땡처리 여행","id":306,"parent":300},	{"id":3061,"parent":306,"data":{"url":"http://msupersave.hanatour.com/"}},	{"id":3062,"parent":306,"data":{"url":"http://m.ybtour.co.kr/promotion/timeGather.do"}},	{"id":3063,"parent":306,"data":{"url":"http://www.tourcabin.com/m/imm.jsp"}},	{"id":3064,"parent":306,"data":{"url":""}},
+{"name":"저가항공","id":307,"parent":300},	{"id":3071,"parent":307,"data":{"url":"https://www.eastarjet.com/newstar/PGWHD00001"}},	{"id":3072,"parent":307,"data":{"url":"https://m.twayair.com/main.do"}},	{"id":3073,"parent":307,"data":{"url":"https://www.jejuair.net/jejuair/mobile/intro.jsp"}},	{"id":3074,"parent":307,"data":{"url":"https://m.airbusan.com/m/common/home"}},
+{"name":"커뮤니티","id":400,"parent":null},				
+{"name":"남자","id":401,"parent":400},	{"id":4011,"parent":401,"data":{"url":"http://m.clien.net"}},	{"id":4012,"parent":401,"data":{"url":"http://m.slrclub.com"}},	{"id":4013,"parent":401,"data":{"url":"http://m.bobaedream.co.kr"}},	{"id":4014,"parent":401,"data":{"url":"http://m.ppomppu.co.kr"}},
+{"name":"여자","id":402,"parent":400},	{"id":4021,"parent":402,"data":{"url":"http://m.ezday.co.kr"}},	{"id":4022,"parent":402,"data":{"url":"http://m.miznet.daum.net"}},	{"id":4023,"parent":402,"data":{"url":"http://m.miclub.com"}},	{"id":4024,"parent":402,"data":{"url":"http://www.bestiz.net"}},
+{"name":"유머","id":403,"parent":400},	{"id":4031,"parent":403,"data":{"url":"http://m.todayhumor.co.kr/"}},	{"id":4032,"parent":403,"data":{"url":"http://m.humoruniv.com"}},	{"id":4033,"parent":403,"data":{"url":"http://www.dogdrip.net/"}},	{"id":4034,"parent":403,"data":{"url":""}},
+{"name":"킬링타임","id":404,"parent":400},	{"id":4041,"parent":404,"data":{"url":"https://m.pikicast.com/"}},	{"id":4042,"parent":404,"data":{"url":"http://1boon.kakao.com"}},	{"id":4043,"parent":404,"data":{"url":"http://www.itpic.co.kr"}},	{"id":4044,"parent":404,"data":{"url":""}},
+//{"name":"연예인","id":405,"parent":400},	{"id":4051,"parent":405,"data":{"url":"http://m.instiz.net"}},	{"id":4052,"parent":405,"data":{"url":""}},	{"id":4053,"parent":405,"data":{"url":""}},	{"id":4054,"parent":405,"data":{"url":""}},
+{"name":"게임","id":406,"parent":400},	{"id":4061,"parent":406,"data":{"url":"http://m.inven.co.kr"}},	{"id":4062,"parent":406,"data":{"url":"http://m.ruliweb.com/news/board/1005"}},	{"id":4063,"parent":406,"data":{"url":"http://m.gamechosun.co.kr"}},	{"id":4064,"parent":406,"data":{"url":"http://m.gamemeca.com/"}},
+{"name":"영화/음악","id":500,"parent":null},				
+{"name":"음악","id":501,"parent":500},	{"id":5011,"parent":501,"data":{"url":"http://m.bugs.co.kr/chart?_redir=n"}},	{"id":5012,"parent":501,"data":{"url":"http://m.soribada.com/chart/realtime"}},	{"id":5013,"parent":501,"data":{"url":"http://www.instiz.net/bbs/list.php?id=spage&no=8"}},	{"id":5014,"parent":501,"data":{"url":""}},
+{"name":"영화","id":502,"parent":500},	{"id":5021,"parent":502,"data":{"url":"http://m.cgv.co.kr/WebAPP/MovieV4/movieList.aspx?mtype=now&iPage=1"}},	{"id":5022,"parent":502,"data":{"url":"http://m.megabox.co.kr/?menuId=movie&type=movie-boxoffice"}},	{"id":5023,"parent":502,"data":{"url":"http://m.movie.naver.com/m/category/movie/CurrentMovie.nhn"}},	{"id":5024,"parent":502,"data":{"url":"http://ticket2.movie.daum.net/Movie/MovieRankList.aspx"}},
+{"name":"책","id":503,"parent":500},	{"id":5031,"parent":503,"data":{"url":"http://m.yes24.com/Home/index"}},	{"id":5032,"parent":503,"data":{"url":"http://m.aladin.co.kr/m/main.aspx"}},	{"id":5033,"parent":503,"data":{"url":"http://www.ypbooks.co.kr/m_main.yp"}},	{"id":5034,"parent":503,"data":{"url":"http://mobile.kyobobook.co.kr"}},
+{"name":"책(베셀)","id":504,"parent":500},	{"id":5041,"parent":504,"data":{"url":"http://m.yes24.com/Home/best"}},	{"id":5042,"parent":504,"data":{"url":"http://m.aladin.co.kr/m/mbest.aspx?BestType=bestseller&BranchType=1&start=alayer"}},	{"id":5043,"parent":504,"data":{"url":"http://www.ypbooks.co.kr/m_bestseller.yp"}},	{"id":5044,"parent":504,"data":{"url":"http://m.book.naver.com/bestsell/list.nhn?category.code=total"}},
+{"name":"공연티켓","id":505,"parent":500},	{"id":5051,"parent":505,"data":{"url":"http://mticket.interpark.com/"}},	{"id":5052,"parent":505,"data":{"url":"http://m.ticketlink.co.kr/"}},	{"id":5053,"parent":505,"data":{"url":"http://m.ticket.yes24.com/"}},	{"id":5054,"parent":505,"data":{"url":""}},
+{"name":"SNS","id":600,"parent":null},				
+{"name":"홈","id":601,"parent":600},	{"id":6011,"parent":601,"data":{"url":"https://m.facebook.com"}},	{"id":6012,"parent":601,"data":{"url":"https://www.instagram.com/?&_suid=148052824541108370265173725784"}},	{"id":6013,"parent":601,"data":{"url":"http://m.band.us/home"}},	{"id":6014,"parent":601,"data":{"url":"https://mobile.twitter.com/i/streams/category/687094916380377110"}}
 ];
 
 function getherSubCategories(parentId) {
 	var aList = [];
 	for (var i = 0; i < aCategories.length; i++) {
 		var catg = aCategories[i];
-		if (!catg.id) {
+		if (!catg.id || catg["name"] == ""
+				|| (catg.data && catg.data.url == "")) {
 			continue;
 		}
 		if (catg.parent == parentId) {
