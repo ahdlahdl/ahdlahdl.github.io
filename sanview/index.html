@@ -316,7 +316,7 @@ $(document).ready(function() {
 	new Counter("sanview", $("#overallCounter"));
 	
 	timer.init();
-	timer.start(60, function() {
+	timer.start(60 * 5, function() {
 		location.reload();
 	});
 });
