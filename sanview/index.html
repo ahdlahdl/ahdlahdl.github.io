@@ -55,6 +55,8 @@ loadScript("js/timer.js", true);
 
 .category_menu {}
 .category_menu .title {color:#FFFFFF;font-size:18px;margin-left:10px;margin-right:10px;}
+.category_menu a {margin-left:4px;}
+.category_menu a.selected {font-weight:bold;color:#fff6b0;}
 
 .timer {float:left;margin-left:5px;margin-right:5px;}
 
@@ -270,12 +272,39 @@ var MenuBox = function(aMenuTree, welMainMenus, welSubMenus) {
 					}
 					
 					viewer.changeCategory(list);
+					location.hash = JSON.stringify(viewer.getInfo());
+					
+					welSubMenus.find(".btn").removeClass("selected");
+					$(this).addClass("selected");
 				}
 			}(htData));
 		}
 		
 		welSubMenus.find(".btn:first").trigger("click");
 	}
+	
+	/*
+	this.searchMenu = function(aSiteList) {
+		for (var i = 0; i < aMenuTree.length; i++) {
+			var list1 = aMenuTree[i].list;
+			for (var j = 0; j < list1.length; j++) {
+				var urlList = list1[j].list;
+				if (!urlList) {
+					continue;
+				}
+				if (aSiteList.length != urlList.length) {
+					continue;
+				}
+				for (var k = 0; k < urlList.length; k++) {
+					if (!urlList[k].data || aSiteList[k].url != urlList[k].data.url) {
+						continue;
+					}
+				}
+				console.log(i, j);
+			}
+		}
+	}
+	*/
 	
 	this.selectTopMenu = function(idx) {
 		var welSelMenu = welMainMenus.find("._topMenuItem").eq(idx);
@@ -289,16 +318,6 @@ var menuBox = new MenuBox(aMenuTree, $(".leftMenu"), $(".category_menu"));
 $(document).ready(function() {
 	viewer.init($(".channel"));
 	
-	var hash = location.hash.replace(/^#/, "");
-	var htInfo = {};
-	if (hash && $.trim(hash).length > 0) {
-		htInfo = JSON.parse(hash);
-	}
-	
-	if (htInfo.list && htInfo.list.length > 0) {
-		viewer.changeCategory(htInfo.list);
-	}
-
 	resizeIframes();
 	
 	$(".addChannel").click(function(we) {
@@ -310,8 +329,21 @@ $(document).ready(function() {
 		we.preventDefault();
 		location.hash = JSON.stringify(viewer.getInfo());
 	});
+
+	var hash = location.hash.replace(/^#/, "");
+	var htInfo = {};
+	if (hash && $.trim(hash).length > 0) {
+		try {
+			htInfo = JSON.parse(hash);
+		} catch (e) {
+		}
+	}
 	
-	menuBox.selectTopMenu(0);
+	if (htInfo.list && htInfo.list.length > 0) {
+		viewer.changeCategory(htInfo.list);
+	} else {
+		menuBox.selectTopMenu(0);
+	}
 	
 	new Counter("sanview", $("#overallCounter"));
 	
