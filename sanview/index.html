@@ -24,11 +24,13 @@
 <script src="js/urlbox.js?20161213"></script>
 <script src="js/channel.js?20161213"></script>
 <script src="js/viewer.js?20161213"></script>
+<script src="js/timer.js?20161213"></script>
 <script type="text/javascript">
 /*
 loadScript("js/urlbox.js", true);
 loadScript("js/channel.js", true);
 loadScript("js/viewer.js", true);
+loadScript("js/timer.js", true);
 */
 </script>
 
@@ -53,6 +55,8 @@ loadScript("js/viewer.js", true);
 
 .category_menu {}
 .category_menu .title {color:#FFFFFF;font-size:18px;margin-left:10px;margin-right:10px;}
+
+.timer {float:left;margin-left:5px;margin-right:5px;}
 
 .cleaner {float:left;width:100%;height:10px;}
 
@@ -88,6 +92,10 @@ iframe {background-color:#ffffff;}
 		<div class="tools">
 			<a class="btn btn-primary geturl" href="#">URL 생성</a>
 			<a class="btn btn-primary addChannel" href="#">창 추가</a>
+			
+			<div class="timer">
+				<a class="btn btn-warning btn-sm refresh" href="#"><span class="countdown"></span>초</a>
+			</div>
 			
 			<div id="overallCounter" class="counter">
 				<span class="txt">TOTAL</span><span class="cnt total"></span><br>
@@ -306,6 +314,11 @@ $(document).ready(function() {
 	menuBox.selectTopMenu(0);
 	
 	new Counter("sanview", $("#overallCounter"));
+	
+	timer.init();
+	timer.start(60, function() {
+		location.reload();
+	});
 });
 
 function resizeIframes() {
