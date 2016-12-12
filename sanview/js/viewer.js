@@ -3,6 +3,8 @@ var viewer = new (function() {
 	var aChannel = [];
 	var welChannelList;
 	
+	var MARGIN_LEFT = 10;
+	
 	this.init = function(_welChannelList) {
 		welChannelList = _welChannelList;
 		for (var i = 0; i < welChannelList.length; i++) {
@@ -31,7 +33,7 @@ var viewer = new (function() {
 	var resizeWidth = function() {
 		var totalWidth = 0;
 		for (var i = 0; i < aChannel.length; i++) {
-			totalWidth += aChannel[i].getInfo().width + 5;
+			totalWidth += aChannel[i].getInfo().width + MARGIN_LEFT;
 		}
 		$(".viewer").width(totalWidth);
 	}
