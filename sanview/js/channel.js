@@ -5,7 +5,7 @@
 var Channel = function(_htOption) {
 	var that = this;
 	var welContainer, urlBox, welIframe;
-	var welBtnNarrow, welBtnWide;
+	var welBtnNarrow, welBtnWide, welBtnClose;
 
 	var htOption = {
 			container : null,
@@ -30,6 +30,7 @@ var Channel = function(_htOption) {
 		welIframe = welContainer.find("iframe");
 		welBtnNarrow = welContainer.find(".narrow");
 		welBtnWide = welContainer.find(".wide");
+		welBtnClose = welContainer.find(".close");
 		
 		welBtnNarrow.bind("click", function(we) {
 			we.preventDefault();
@@ -43,6 +44,11 @@ var Channel = function(_htOption) {
 			var width = welContainer.width() + 50;
 			welContainer.width(width);
 			htOption.onResize();
+		});
+		
+		welBtnClose.bind("click", function(we) {
+			we.preventDefault();
+			that.close();
 		})
 	}
 	
