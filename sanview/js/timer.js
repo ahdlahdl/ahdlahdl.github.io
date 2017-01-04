@@ -32,7 +32,11 @@ var timer = new (function() {
 			return;
 		}
 		remainSec--;
-		welCountdown.text(remainSec);
+		var msg = remainSec + "초";
+		if (remainSec % 30 > 24) {
+			msg = "refresh ON " + remainSec + "초";
+		}
+		welCountdown.text(msg);
 		if (remainSec <= 0) {
 			onRefresh();
 		}
@@ -46,6 +50,9 @@ var timer = new (function() {
 		clearTimeout(tCounter);
 		if (isProgress) {
 			tCounter = setInterval(countdown, 1000);
+			countdown();
+		} else {
+			welCountdown.text("refresh OFF");
 		}
 	}
 })();
