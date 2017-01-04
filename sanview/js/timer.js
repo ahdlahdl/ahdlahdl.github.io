@@ -3,10 +3,10 @@ var timer = new (function() {
 	
 	var welBtnRefresh, welCountdown;
 
-	var tInterval = null;
 	var tCounter = null;
 	var remainSec = 0;
 	var onRefresh = function() {};
+	var isProgress = false;
 
 	this.init = function() {
 		welBtnRefresh = $(".timer .refresh");
@@ -19,22 +19,33 @@ var timer = new (function() {
 		remainSec = intervalSec;
 		onRefresh = _onRefresh;
 		
-		clearTimeout(tInterval);
 		clearTimeout(tCounter);
 		
-		tInterval = setInterval(onRefresh, intervalSec * 1000);
+		isProgress = true;
+		
 		tCounter = setInterval(countdown, 1000);
 		countdown();
-
 	}
 	
 	var countdown = function() {
+		if (!isProgress) {
+			return;
+		}
 		remainSec--;
 		welCountdown.text(remainSec);
+		if (remainSec <= 0) {
+			onRefresh();
+		}
 	}
 	
 	var refresh = function(we) {
 		we.preventDefault();
-		onRefresh();
+		isProgress ^= true;
+		welBtnRefresh.removeClass("btn-warning btn-primary").addClass(isProgress ? "btn-warning" : "btn-primary");
+		
+		clearTimeout(tCounter);
+		if (isProgress) {
+			tCounter = setInterval(countdown, 1000);
+		}
 	}
 })();
